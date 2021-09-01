@@ -118,6 +118,13 @@ setMethod(
   f="analyse.data",
   signature=c("DS.Analysis", "Survey"),
   definition=function(analysis, data.obj, warnings = list(), ...){
+    # Pass in simulation repetition number for warnings
+    args <- list(...)
+    if("i" %in% names(args)){
+      i <- args$i
+    }else{
+      i <- numeric(0)
+    }
     # Get distance data
     dist.data <- data.obj@dist.data
     # Check what kind of survey it is
@@ -125,7 +132,7 @@ setMethod(
                        Survey.LT = "line",
                        Survey.PT = "point")
     #Call analyse.data on model and dataset
-    analysis <- analyse.data(analysis, dist.data, transect = transect, warnings = warnings)
+    analysis <- analyse.data(analysis, dist.data, transect = transect, warnings = warnings, i = i)
     return(analysis)
   }
 )
@@ -141,6 +148,13 @@ setMethod(
   f="analyse.data",
   signature=c("DS.Analysis", "data.frame"),
   definition=function(analysis, data.obj, warnings = list(), transect = "line", ...){
+    # Pass in simulation repetition number for warnings
+    args <- list(...)
+    if("i" %in% names(args)){
+      rep <- args$i
+    }else{
+      rep <- numeric(0)
+    }
     dist.data <- data.obj
     # deal with adjustment arguments
     if(length(analysis@adjustment) == 0){
@@ -203,37 +217,57 @@ setMethod(
                                          warning=function(w){W <<- w; invokeRestart("muffleWarning")}))
       #check if there was an error, warning or non-convergence
       if(any(class(models[[i]]) == "error")){
-        warnings <- message.handler(warnings, paste("Error: ", models[[i]]$message, " (Model number: ", i, ")", sep = ""))
+        warnings <- message.handler(warnings, paste("Error: ", models[[i]]$message, " (Model number: ", i, ")", sep = ""), rep)
         models[[i]] <- NA
       }else if(models[[i]]$ddf$ds$converge != 0){
-        warnings <- message.handler(warnings, paste("The following model failed to converge: ", i, sep = ""))
+        warnings <- message.handler(warnings, paste("The following model failed to converge: ", i, sep = ""), rep)
         models[[i]] <- NA
       }else if(any(models[[i]]$fitted < 0)){
-        warnings <- message.handler(warnings, paste("Negative predictions for model ", i,", excluding these results.", sep = ""))
-        ddf.result <- NA
+        warnings <- message.handler(warnings, paste("Negative predictions for model ", i,", excluding these results.", sep = ""), rep)
+        models[[i]] <- NA
+      }else if(is.null(models[[i]]$dht)){
+        warnings <- message.handler(warnings, paste("NULL value for dht part of model ", i,", excluding these results.", sep = ""), rep)
+        models[[i]] <- NA
       }
       if(!is.null(W)){
-        warnings <- message.handler(warnings, paste(W, " (Model number: ", i, ")", sep = ""))
+        warnings <- message.handler(warnings, paste(W, " (Model number: ", i, ")", sep = ""), rep)
       }
-      if(class(models[[i]]) == "dsmodel"){
+      if(any(class(models[[i]]) == "dsmodel")){
         IC[i] <- switch(analysis@criteria,
                         "AIC" = AIC(models[[i]])$AIC,
                         "AICc" = AICc(models[[i]]),
                         "BIC" = BIC(models[[i]]))
+      }else{
+        IC[i] <- NA
+      }
+      if(!is.na(IC[i])){
+        if(IC[i] == -Inf){
+          IC[i] <- NA
+          warnings <- message.handler(warnings, paste("The following model had model selection criteria of -Inf: ", i, sep = ""), rep)
+          models[[i]] <- NA
+        }
       }
     } #Fit next model
     #Find model with the minimum information criteria
-    if(length(IC) > 0){
+    if(length(na.omit(IC)) > 0){
       min.IC <- min(IC, na.rm = TRUE)
       index <- which(IC == min.IC)
       min.model <- models[[index]]
       min.model$ddf$model.index <- index
+      num.successful.models = length(which(!is.na(IC)))
+      # If more than one model converged then calculate the difference in selection criteria
+      # Between two best fitting models
+      if(num.successful.models > 1){
+        sorted.criteria <- sort(na.omit(IC))
+        delta.criteria <- sorted.criteria[2] - sorted.criteria[1]
+        min.model$ddf$delta.criteria <- delta.criteria
+      }
     }else{
-      warnings <- message.handler(warnings, "None of the models converged for this dataset.")
+      warnings <- message.handler(warnings, "None of the models converged for this dataset.", rep)
       return(list(model = NULL, warnings = warnings, num.successful.models = 0))
     }
     # Return model and warnings
-    return(list(model = min.model, warnings = warnings, num.successful.models = length(which(!is.na(IC)))))
+    return(list(model = min.model, warnings = warnings, num.successful.models = num.successful.models))
   }
 )
 

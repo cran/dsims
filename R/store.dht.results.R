@@ -1,7 +1,14 @@
-store.dht.results <- function(results, dht.results, i, clusters, data, obs.tab){
+store.dht.results <- function(results, dht.results, i, clusters, data, obs.tab, sample.tab){
   # Calculate the number of observations with missing distances
   strata.names <- dimnames(results$individuals$summary)[[1]]
   strata.names.ND <- as.character(dht.results$individual$N$Label)
+  # To calculate k for individuals
+  sampler.count <- table(sample.tab$Region.Label)
+  if("Total" %in% strata.names && length(strata.names) > 1){
+    sampler.count <- c(sampler.count, sum(sampler.count))
+    last <- length(sampler.count)
+    names(sampler.count)[last] <- "Total"
+  }
   for(strat in seq(along = strata.names)){
     # Get the number of missed dists in strata
     if(strata.names[strat] == "Total"){
@@ -20,6 +27,8 @@ store.dht.results <- function(results, dht.results, i, clusters, data, obs.tab){
       results$individuals$summary[strat,c("n.miss.dist"),i] <- nrow(data.miss.dists)
     }
     results$individuals$summary[strat,c("Area", "CoveredArea", "Effort", "n", "ER", "se.ER", "cv.ER"),i] <- as.matrix(dht.results$individuals$summary[dht.results$individual$summary$Region == strata.names[strat],c("Area", "CoveredArea", "Effort", "n", "ER", "se.ER", "cv.ER")])
+    # Add k
+    results$individuals$summary[strat,c("k"),i] <- sampler.count[[strata.names[strat]]]
     results$individuals$N[strat,c("Estimate", "se", "cv", "lcl", "ucl", "df"),i] <- as.matrix(dht.results$individuals$N[dht.results$individual$N$Label == strata.names.ND[strat],c("Estimate", "se", "cv", "lcl", "ucl", "df")])
     results$individuals$D[strat,c("Estimate", "se", "cv", "lcl", "ucl", "df"),i] <- as.matrix(dht.results$individuals$D[dht.results$individual$D$Label == strata.names.ND[strat],c("Estimate", "se", "cv", "lcl", "ucl", "df")])
   }

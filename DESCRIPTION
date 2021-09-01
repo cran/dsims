@@ -6,7 +6,7 @@ Suggests: testthat, parallel, pbapply, knitr, lwgeom, rmarkdown
 VignetteBuilder: knitr
 Type: Package
 Title: Distance Sampling Simulations
-Version: 0.1.1
+Version: 0.2.0
 Author: Laura Marshall <lhm@st-and.ac.uk>
 Maintainer: Laura Marshall <lhm@st-and.ac.uk>
 Description: Performs distance sampling simulations. 'dsims' repeatedly generates
@@ -38,13 +38,14 @@ Collate: 'AICc.R' 'generic.functions.R' 'Density.Summary.R' 'Density.R'
         'add.covariate.values.R' 'add.summary.results.R'
         'calc.perp.dists.R' 'calc.rad.dists.R'
         'calculate.scale.param.R' 'check.covariates.R'
-        'check.transects.R' 'create.results.arrays.R'
-        'description.summary.R' 'dsims-package.R' 'generate.pop.D.R'
-        'generate.pop.N.R' 'get.density.surface.R' 'message.handler.R'
+        'check.simulation.R' 'check.transects.R'
+        'create.results.arrays.R' 'description.summary.R'
+        'dsims-package.R' 'generate.pop.D.R' 'generate.pop.N.R'
+        'get.density.surface.R' 'message.handler.R'
         'modify.strata.for.analysis.R' 'rtpois.R' 'run.simulation.R'
         'simulate.detections.R' 'single.sim.loop.R'
         'store.ddf.results.R' 'store.dht.results.R'
 NeedsCompilation: no
-Packaged: 2021-04-21 10:05:22 UTC; lhm
+Packaged: 2021-09-01 09:09:51 UTC; lhm
 Repository: CRAN
-Date/Publication: 2021-04-22 07:20:11 UTC
+Date/Publication: 2021-09-01 21:50:05 UTC

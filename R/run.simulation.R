@@ -48,6 +48,7 @@ run.simulation <- function(simulation, run.parallel = FALSE, max.cores = NA, cou
   #reset the error/warning message
   simulation@warnings$message <- list()
   simulation@warnings$counter <- list()
+  simulation@warnings$index <- list()
   #check the data.path ends in "/"
   if(length(data.path) > 0){
     temp.path <- strsplit(data.path, split = "")
@@ -93,7 +94,7 @@ run.simulation <- function(simulation, run.parallel = FALSE, max.cores = NA, cou
     })
     on.exit(stopCluster(myCluster))
     if(counter){
-        results <- pbapply::pblapply(X= as.list(1:simulation@reps), FUN = single.sim.loop, simulation = simulation, save.data = save.data, load.data = load.data, data.path = data.path, cl = myCluster, counter = FALSE)
+        results <- pbapply::pblapply(X = as.list(1:simulation@reps), FUN = single.sim.loop, simulation = simulation, save.data = save.data, load.data = load.data, data.path = data.path, cl = myCluster, counter = FALSE)
     }else{
       results <- parLapply(myCluster, X = as.list(1:simulation@reps), fun = single.sim.loop, simulation = simulation, save.data = save.data, load.data = load.data, data.path = data.path, counter = FALSE)
     }
@@ -130,7 +131,9 @@ run.simulation <- function(simulation, run.parallel = FALSE, max.cores = NA, cou
   if(length(simulation@warnings$message) > 0){
     message("Summary of warnings and errors:")
     for(i in seq(along = simulation@warnings$message)){
-      message(paste(simulation@warnings$message[[i]], " (occurred ", simulation@warnings$counter[[i]], " times)"))
+      rep.info <- ifelse(is.null(simulation@warnings$index), "",
+                         paste(" in repetition(s): ", paste(simulation@warnings$index[[i]], collapse = ", ")))
+      message(paste(simulation@warnings$message[[i]], " (occurred ", simulation@warnings$counter[[i]], " time(s)", rep.info, ")", sep = ""))
     }
     message("-----")
   }

@@ -237,8 +237,8 @@ make.population.description <- make.pop.description <- function(region = make.re
                          poisson = "lambda",
                          ztruncpois = "mean",
                          lognormal = c("meanlog", "sdlog"))
-        if(!params %in% names(covariates[[cov]][[i]])){
-          stop(paste("You have not supplied all the required parameters (", paste(params, collapse = ", "),") for the following covariate distribution: ", covariates[[cov]][[i]]$distribution, sep = ""))
+        if(!all(params %in% names(covariates[[cov]][[i]]))){
+          stop(paste("You have not supplied all the required parameters (", paste(params, collapse = ", "),") for the following covariate distribution: ", covariates[[cov]][[i]]$distribution, sep = ""), call. = FALSE)
         }
         # Separate out into old format
         pvs <- covariates[[cov]][[i]]
@@ -336,6 +336,26 @@ make.detectability <- function(key.function = "hn", scale.param = 25, shape.para
 #' models to the data generated in the simulation and select the model with
 #' the minimum criteria value.
 #'
+#' @details
+#' It is possible to group strata at the analysis stage using the group.strata
+#' argument. For example, for design purposes it may have been sensible to
+#' divide strata into substrata. This can help make more convex shapes and
+#' therefore zigzag designs more efficient or perhaps it helped to keep
+#' transects angled parallel to density gradients across the study area.
+#' Despite these (purely design relevant) substrata we may still wish to
+#' calculate estimates of density / abundance etc. for each stratum. The
+#' table below gives an example of the data.frame which can be used to do
+#' this. Imagine a study region with an onshore strata and an offshore
+#' strata. The onshore strata has been divided in two at the design stage
+#' to keep transects perpendicular to the coast. We now want to analyse
+#' this as just two strata the onshore and offshore.
+#'
+#' \tabular{ll}{ design.id         \tab analysis.id \cr
+#'               ---------         \tab ----------- \cr
+#'               onshoreN          \tab onshore     \cr
+#'               onshoreS          \tab onshore     \cr
+#'               offshore          \tab offshore    \cr}
+#'
 #' @param dfmodel list of distance sampling model formula specifying the detection function
 #'  (see \code{?Distance::ds} for further details)
 #' @param key key function to use; "hn" gives half-normal (default) and "hr" gives
@@ -350,7 +370,8 @@ make.detectability <- function(key.function = "hn", scale.param = 25, shape.para
 #' @param control.opts A list of control options: method - optimisation method,
 #' @param group.strata Dataframe with two columns ("design.id" and "analysis.id"). The
 #' former gives the strata names as defined in the design (i.e. the region object) the
-#' second specifies how they should be grouped (into less strata) for the analyses
+#' second specifies how they should be grouped (into less strata) for the analyses. See
+#' details for more information.
 #' @param criteria character model selection criteria (AIC, AICc, BIC)
 #' @return \code{\link{DS.Analysis-class}} object
 #' @export
@@ -389,11 +410,6 @@ make.ds.analysis <- function(dfmodel = list(~1),
                              group.strata = data.frame(),
                              criteria = "AIC"){
   # Do some pre-creation input checking / formatting
-  # if(length(cutpoints) > 0 && length(truncation) > 0){
-  #   warning("Cutpoints have been supplied so the truncation value(s) will be ignored. The largest cutpoint will be used as the right truncation value", call. = FALSE, immediate. = TRUE)
-  #   # Doing this means left trunction is not currently possible with binned data
-  #   truncation <- numeric(0)
-  # }
   if(!is.double(truncation) || length(truncation) > 1){
     stop("Truncation must be supplied as a single numeric value giving the absolute truncation distance.", call. = FALSE)
   }else if("list" %in% class(truncation)){
@@ -403,16 +419,6 @@ make.ds.analysis <- function(dfmodel = list(~1),
   }else{
     truncation <- list(truncation)
   }
-  # if("list" %in% class(truncation)){
-  #   if(!all(c("left","right") %in% names(truncation))){
-  #     stop("Truncation must be supplied as a single number/string or a list with elements \"left\" and \"right\".", call. = FALSE)
-  #   }
-  # }else{
-  #   if(length(truncation) > 1){
-  #     stop("Truncation must be supplied as a single number/string or a list with elements \"left\" and \"right\".", call. = FALSE)
-  #   }
-  #   truncation <- list(truncation)
-  # }
   # make sure that the first bin starts 0 or left
   if(length(cutpoints) > 0){
     if(!is.null(truncation$left)){
@@ -451,7 +457,8 @@ make.ds.analysis <- function(dfmodel = list(~1),
 #' Examples below. To create more complex simulations it is advisable to define the
 #' different parts of the simulation individually before grouping them together. See
 #' the Arguments for links to the functions which make the definitions for the
-#' individual simulation components.
+#' individual simulation components. For a more in depth example please refer to the
+#' 'GettingStarted' vignette.
 #' @details The \code{make.simulation} function is now set up so that by
 #'  default (with the exception of specifying point transects rather than
 #'   line) it can run a simple simulation example. See examples.
@@ -506,8 +513,9 @@ make.ds.analysis <- function(dfmodel = list(~1),
 #'                                 criteria = "AIC")
 #'
 #' # Put all the components together in the simulation (note no. of replicates
-#' # reps = 100 is too low for reliable results increase to 999 or more!)
-#' simulation <- make.simulation(reps = 100,
+#' # reps = 1 is only for a single test run and should be 999 or more to be able
+#' # to draw inference.)
+#' simulation <- make.simulation(reps = 1,
 #'                               design = design,
 #'                               population.description = popdsc,
 #'                               detectability = detect,
@@ -517,21 +525,14 @@ make.ds.analysis <- function(dfmodel = list(~1),
 #' survey <- run.survey(simulation)
 #' plot(survey, region)
 #'
-#' \donttest{
-#' # Run the simulation - warning this will take some time to run!
+#' # Run the simulation
+#' # Warning: if you have increased the number of replications then it can take a
+#' # long time to run!
 #' simulation <- run.simulation(simulation)
 #' summary(simulation)
-#' }
 #'
-#' # Toy example for CRAN testing purposes - warning only 1 replicate
-#' # run so does not produce meaningful results!
-#' simulation <- make.simulation(reps = 1,
-#'                               design = design,
-#'                               population.description = popdsc,
-#'                               detectability = detect,
-#'                               ds.analysis = ds.analyses)
-#' simulation <- run.simulation(simulation)
-#' summary(simulation)
+#' # For a more in depth example please look at
+#' vignette("GettingStarted", 'dsims')
 #'
 make.simulation <- function(reps = 10, design = make.design(), population.description = make.population.description(), detectability = make.detectability(), ds.analysis = make.ds.analysis()){
 
@@ -540,7 +541,7 @@ make.simulation <- function(reps = 10, design = make.design(), population.descri
                                    design@region,
                                    ds.analysis,
                                    population.description)
-  #create a simulation object
+  # Create a simulation object
   simulation <- new(Class = "Simulation",
                     reps = reps,
                     design = design,
@@ -548,5 +549,12 @@ make.simulation <- function(reps = 10, design = make.design(), population.descri
                     detectability = detectability,
                     ds.analysis = ds.analysis,
                     results = results)
+  # Check the simulation object
+  simulation <- check.simulation(simulation)
+  # If it has returned a character this is an error
+  if(class(simulation) == "character"){
+    stop(simulation, call. = FALSE)
+  }
+
   return(simulation)
 }

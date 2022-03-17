@@ -50,7 +50,7 @@ test_that("Can create object or return correct error messages", {
                                er.var = "P3")
 
   # Make.simulation
-  sim <- make.simulation(reps = 5,
+  sim <- make.simulation(reps = 1,
                          design = design,
                          population.description = pop.descrp,
                          detectability = detect,
@@ -58,10 +58,11 @@ test_that("Can create object or return correct error messages", {
 
   # Create a test survey
   survey <- run.survey(sim)
-  expect_true(class(survey@transect) == "Point.Transect")
+  expect_true(inherits(survey@transect, "Point.Transect"))
 
   # test running the simulation
-  test <- run.simulation(sim, counter = FALSE)
+  #set.seed(555)
+  #test <- run.simulation(sim, counter = FALSE)
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

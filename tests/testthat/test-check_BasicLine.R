@@ -22,7 +22,7 @@ test_that("Test creation and data generation", {
   analysis <- make.ds.analysis(dfmodel = ~1,
                                key = "hn",
                                truncation = 50)
-  sim <- make.simulation(reps = 5,
+  sim <- make.simulation(reps = 1,
                          design = design,
                          population.description = pop.desc,
                          detectability = detect,
@@ -32,10 +32,8 @@ test_that("Test creation and data generation", {
   expect_true(inherits(survey@transect, "Line.Transect"))
 
   sim.serial <- run.simulation(sim, counter = FALSE)
-  #summary(sim.serial, description.summary = FALSE)
+  sim.sum <- summary(sim.serial, description.summary = FALSE)
 
-  sim.para <- run.simulation(sim, run.parallel = TRUE, counter = FALSE)
-  # summary(sim.para)
 
 })
 
@@ -72,6 +70,21 @@ test_that("Test uf detectability key function", {
 
   survey <- run.survey(sim)
   expect_equal(length(survey@dists.in.covered), nrow(survey@dist.data))
-
+  
+  
+  # Check plus sampling turn to minus with a warning
+  design <- make.design(region = region,
+                        transect.type = "line",
+                        samplers = 20,
+                        truncation = 30,
+                        edge.protocol = "plus")
+  expect_warning(sim <- make.simulation(reps = 5,
+                         design = design,
+                         population.description = pop.desc,
+                         detectability = detect,
+                         ds.analysis = analysis),
+                 "Plus sampling not yet implemented in dsims, edge protocol will be modified to minus sampling.")
+  expect_equal(sim@design@edge.protocol, "minus")
+  
 })
 

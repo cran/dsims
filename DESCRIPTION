@@ -6,7 +6,7 @@ Suggests: testthat, parallel, pbapply, knitr, lwgeom, rmarkdown
 VignetteBuilder: knitr
 Type: Package
 Title: Distance Sampling Simulations
-Version: 0.2.1
+Version: 0.2.2
 Author: Laura Marshall <lhm@st-and.ac.uk>
 Maintainer: Laura Marshall <lhm@st-and.ac.uk>
 Description: Performs distance sampling simulations. 'dsims' repeatedly generates
@@ -46,6 +46,6 @@ Collate: 'AICc.R' 'generic.functions.R' 'Density.Summary.R' 'Density.R'
         'simulate.detections.R' 'single.sim.loop.R'
         'store.ddf.results.R' 'store.dht.results.R'
 NeedsCompilation: no
-Packaged: 2022-03-17 13:01:52 UTC; laura
+Packaged: 2022-03-31 00:41:25 UTC; laura
 Repository: CRAN
-Date/Publication: 2022-03-17 13:30:02 UTC
+Date/Publication: 2022-03-31 06:20:02 UTC

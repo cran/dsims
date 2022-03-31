@@ -1,4 +1,4 @@
-9b2cecb6799ef5c27204acce53ea8168 *DESCRIPTION
+54192a533e2a52eceeb3723c1b4b3041 *DESCRIPTION
 99d6f09bab9cb43d9569f6618d6f6f57 *NAMESPACE
 300a5b20be0aab3bb300d0675dc2a1d5 *NEWS
 706e8c10a542235d4e9b7ce648cb072c *R/AICc.R
@@ -36,14 +36,14 @@ f4ed5f36140e1b25ef83506f38205e72 *R/message.handler.R
 fe0705bc9ce208ad32d119431ce3732e *R/rtpois.R
 834bba25a8215ac4b9d8a89b66a202db *R/run.simulation.R
 8bf620223747505afebbd0d1de3e69ba *R/simulate.detections.R
-26ccfe292bf20c64677392b831d44802 *R/single.sim.loop.R
+257c73779f4e27d299caa51bbc936827 *R/single.sim.loop.R
 60b117d2b8efa30ae3b9ece20ca453b0 *R/store.ddf.results.R
 9b0c96a31b6149ed0d5123449536dd29 *R/store.dht.results.R
 bc8f7ebb210e2ca721b3a5ca716df605 *README.md
 50c152677e8c62b1beeb17a17fdaa903 *build/vignette.rds
 791fb56b379493610a750e032d6a2f57 *inst/doc/GettingStarted.R
 a2c456af7f5c19f4d9e3caa64f456d5c *inst/doc/GettingStarted.Rmd
-9aa46b1e93cc967aaa933823bce25a78 *inst/doc/GettingStarted.html
+bb93d220b7de553efe94c48afe3a85e1 *inst/doc/GettingStarted.html
 cf3149054668c253f51af3e4a12ad820 *man/DS.Analysis-class.Rd
 79b2ca5c46a9bcabb7cc38815cbaf8c6 *man/Density-class.Rd
 1bf5a555df65998acac1eb20b3e94b31 *man/Density.Summary-class.Rd
@@ -83,12 +83,12 @@ b33439c398b572f418a878b01d013baa *man/show.Density.Summary-methods.Rd
 5572ac21e14c48b767e017bd0440db48 *man/summary.Density-methods.Rd
 b8ec2a1801c533770aee7217a7c8a52c *man/summary.Simulation-methods.Rd
 14237c19c3230c873349060f23c54048 *tests/test-that.R
-286eba150402a4fb92c7322e965d28cc *tests/testthat/test-BasicLine.R
+9ece6f88e4cf22b5e3496cffbca3dd4a *tests/testthat/test-BasicLine.R
 3a97b6d456672ec9e9c2eedd89817d25 *tests/testthat/test-ProblemCases.R
 fcc13c93351a5e3de9fdf101b0309b88 *tests/testthat/test-check_AnalysisOptions.R
 9d4db46aafecfd1326b98620b5e28426 *tests/testthat/test-check_BasicLine.R
 5c5092bd14095198b78c85f6bf1f46a9 *tests/testthat/test-check_BasicPoint.R
-88db2e0c7ca605f109fd9407546ccb6a *tests/testthat/test-check_BasicSegmentedLine.R
+82d50a8579ea029ce7bc4a42ce9fa348 *tests/testthat/test-check_BasicSegmentedLine.R
 7db891250313c8b66d7811cf70d02530 *tests/testthat/test-check_Constructors.R
 187af6bfd609b41d36ce341640b6162f *tests/testthat/test-check_IndividualCovariates.R
 45b07326449d2f008fe6a21019cb7597 *tests/testthat/test-check_StratifiedLine.R

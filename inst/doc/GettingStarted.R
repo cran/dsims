@@ -182,7 +182,8 @@ summary(sim.parallel)
 summary(sim.zigzag)
 
 ## ----hist.results, fig.align='center', fig.cap="Figure 9: Left - histogram of estimates of abundance of clusters for systematic parallel design. Right - histogram of estimates of abundance of clusters for zigzag design.", fig.width=6, fig.height=4----
-par(mfrow = c(1,2))
+oldparams <- par(mfrow = c(1,2))
 histogram.N.ests(sim.parallel)
 histogram.N.ests(sim.zigzag)
+par(oldparams)
 

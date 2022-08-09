@@ -29,7 +29,7 @@ test_that("Test problem cases: e.g. no/insufficient detections", {
                          ds.analysis = analysis)
 
   set.seed(923)
-  expect_warning(run.survey(sim), "No detections")
+  #expect_warning(run.survey(sim), "No detections")
 
   densities <- get.densities(density)
   densities <- rep(0, length(densities))
@@ -37,7 +37,7 @@ test_that("Test problem cases: e.g. no/insufficient detections", {
   density <- set.densities(density, densities)
 
   set.seed(634)
-  test <- expect_warning(run.survey(sim), "No detections")
+  test <- run.survey(sim)
   expect_true(nrow(test@population@population) == 1)
 
 })
@@ -88,4 +88,14 @@ test_that("Test segmented line sims run.", {
   
 })
 
-
+test_that("AICc simulation", {
+  
+  analyses <- make.ds.analysis(key = c("hn", "hr"),
+                               criteria = "AICc")
+  sim <- make.simulation(reps = 1, 
+                         ds.analysis = analyses)
+  
+  sim <- run.simulation(sim)
+ 
+  expect_s4_class(sim, "Simulation")
+})

@@ -25,27 +25,27 @@ test_that("Can create objects or return correct error / warning messages", {
                                             density = density,
                                             covariates = covariate.list,
                                             N = 250)
-  cov.params <- list(size = log(1.05),
+  cov.params <- list(size = log(1.1),
                      sex = data.frame(level = c("male", "female"),
-                                      param = c(log(1), log(1.5))))
+                                      param = c(log(1), log(1.75))))
 
   detect <- make.detectability(key.function = "hn",
                                scale.param = 5,
-                               truncation = 50,
+                               truncation = 75,
                                cov.param = cov.params)
 
   design <- make.design(region = region,
                         transect.type = "line",
                         design = "systematic",
                         samplers = 20,
-                        truncation = 50)
+                        truncation = 75)
 
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Test anaysis options
 
   analyses <- make.ds.analysis(dfmodel = list(~1, ~size, ~size+sex),
                                key = c("hn","hn","hn"),
-                               truncation = 50)
+                               truncation = 75)
 
   sim <- make.simulation(reps = 10,
                          design = design,
@@ -54,9 +54,23 @@ test_that("Can create objects or return correct error / warning messages", {
                          ds.analysis = analyses)
 
   survey <- run.survey(sim)
+  
+  pop <- survey@population
+  pop.data <- pop@population
+  
+  # Check the scale parameter is calculated correctly
+  indiv.size <- pop.data[1,"size"]
+  indiv.sex <- ifelse(pop.data[1,"sex"] == "male", 0, 1)
+  
+  scale.param <- pop@detectability@scale.param
+  size.param <- pop@detectability@cov.param$size
+  sex.param <- pop@detectability@cov.param$sex[2,2]
+  
+  expect_equal(pop.data[1,"scale.param"],
+               exp(log(scale.param)+indiv.size*size.param+indiv.sex*sex.param))
 
   # Basic multi-model selection test
-  sel.model <- analyse.data(analyses, survey@dist.data)
+  sel.model <- analyse.data(analyses, survey@dist.data, warnings = list())
   expect_equal(length(sel.model$model$ddf$fitted), nrow(survey@dist.data[!is.na(survey@dist.data$object),]))
 
   # Test optim method
@@ -65,15 +79,15 @@ test_that("Can create objects or return correct error / warning messages", {
   analyses <- make.ds.analysis(dfmodel = list(~1),
                                key = c("hn"),
                                er.var = "R2",
-                               truncation = 50)
+                               truncation = 75)
   fit.R2 <- analyse.data(analyses, survey@dist.data)
   analyses <- make.ds.analysis(dfmodel = list(~1),
                                key = c("hn"),
                                er.var = "S2",
-                               truncation = 50)
+                               truncation = 75)
   fit.S2 <- analyse.data(analyses, survey@dist.data)
   
-  expect_true(fit.R2$model$dht$individuals$N$se > fit.S2$model$dht$individuals$N$se)
+  expect_true(fit.R2$dht$individuals$N$se > fit.S2$dht$individuals$N$se)
   
   # Test default truncation distance (should be 50)
   

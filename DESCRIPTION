@@ -6,7 +6,7 @@ Suggests: testthat, parallel, pbapply, knitr, lwgeom, rmarkdown
 VignetteBuilder: knitr
 Type: Package
 Title: Distance Sampling Simulations
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(
   person("Laura", "Marshall", email = "lhm@st-and.ac.uk", role = c("aut", "cre")),
   person("Thomas", "Len", email = "len.thomas@st-andrews.ac.uk", role = "ctb"))
@@ -31,7 +31,7 @@ Language: en-GB
 URL: https://github.com/DistanceDevelopment/dsims
 BugReports: https://github.com/DistanceDevelopment/dsims/issues
 Encoding: UTF-8
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 Collate: 'AICc.R' 'generic.functions.R' 'Density.Summary.R' 'Density.R'
         'Population.Description.R' 'Detectability.R' 'Population.R'
         'Survey.R' 'DS.Analysis.R' 'Simulation.R' 'ClassConstructors.R'
@@ -48,11 +48,11 @@ Collate: 'AICc.R' 'generic.functions.R' 'Density.Summary.R' 'Density.R'
         'modify.strata.for.analysis.R' 'process.dist.shapes.R'
         'read.line.transects.R' 'read.point.transects.R'
         'read.seg.transects.R' 'run.simulation.R' 'rztpois.R'
-        'simulate.detections.R' 'single.sim.loop.R'
-        'store.ddf.results.R' 'store.dht.results.R'
+        'save.sim.results.R' 'simulate.detections.R'
+        'single.sim.loop.R' 'store.ddf.results.R' 'store.dht.results.R'
 NeedsCompilation: no
-Packaged: 2022-08-09 11:51:16 UTC; laura
+Packaged: 2022-08-30 14:21:28 UTC; laura
 Author: Laura Marshall [aut, cre],
   Thomas Len [ctb]
 Repository: CRAN
-Date/Publication: 2022-08-09 12:10:10 UTC
+Date/Publication: 2022-08-30 15:10:06 UTC

@@ -1,12 +1,12 @@
 Package: dsims
 Depends: dssd (>= 0.2.2)
-Imports: mrds, Distance, sf, sp, ggplot2, mgcv, rgeos, methods,
+Imports: mrds, Distance, sf, ggplot2, purrr, dplyr, mgcv, methods,
         rstudioapi, gridExtra, rlang
 Suggests: testthat, parallel, pbapply, knitr, lwgeom, rmarkdown
 VignetteBuilder: knitr
 Type: Package
 Title: Distance Sampling Simulations
-Version: 1.0.1
+Version: 1.0.4
 Authors@R: c(
   person("Laura", "Marshall", email = "lhm@st-and.ac.uk", role = c("aut", "cre")),
   person("Thomas", "Len", email = "len.thomas@st-andrews.ac.uk", role = "ctb"))
@@ -31,7 +31,7 @@ Language: en-GB
 URL: https://github.com/DistanceDevelopment/dsims
 BugReports: https://github.com/DistanceDevelopment/dsims/issues
 Encoding: UTF-8
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Collate: 'AICc.R' 'generic.functions.R' 'Density.Summary.R' 'Density.R'
         'Population.Description.R' 'Detectability.R' 'Population.R'
         'Survey.R' 'DS.Analysis.R' 'Simulation.R' 'ClassConstructors.R'
@@ -51,8 +51,8 @@ Collate: 'AICc.R' 'generic.functions.R' 'Density.Summary.R' 'Density.R'
         'save.sim.results.R' 'simulate.detections.R'
         'single.sim.loop.R' 'store.ddf.results.R' 'store.dht.results.R'
 NeedsCompilation: no
-Packaged: 2022-08-30 14:21:28 UTC; laura
+Packaged: 2023-11-24 13:46:36 UTC; lhm
 Author: Laura Marshall [aut, cre],
   Thomas Len [ctb]
 Repository: CRAN
-Date/Publication: 2022-08-30 15:10:06 UTC
+Date/Publication: 2023-11-29 14:10:02 UTC

@@ -1,3 +1,33 @@
+dsims 1.0.4
+-------------------
+ 
+Bug Fixes
+
+ * Fixed a bug when generating the simulation summary which meant that only the first value of mean.k and n.miss.dists was repeated rather than including all values in the summary tables. Issue #84
+ * The make.simulation function now throws an error if the P2 ER variance estimator is used with line transects designs (rather than after the simulation has completed). Issue #61 
+
+dsims 1.0.3
+-------------------
+ 
+Bug Fixes
+
+ * Simulations were crashing if there were zero detections - now fixed and warnings displayed instead. Issue #77
+ * Errors were also occuring when there were no individuals generated in a stratum, now fixed. Issue #80
+ * Detections are no longer permitted across stratum boundaries - this was causing errors due to NA area values in the data. This is inline with expected protocols on surveys. Issue #81
+ * Remove dependence on sp and rgeos. Issue #42
+
+dsims 1.0.2
+-------------------
+ 
+Bug Fixes
+
+ * Fixed transparency issue with detection distance histograms when saving to wmf (generated a warning in Distance for Windows)
+ * Only print summary table for individuals if animals occur as individuals (and not as clusters)
+ * Updated references to examples
+ * Fixed grouped strata bugs
+ * Can now read transect shapefiles in from file and will convert all to one strata if global region used. This allows regional simulations from stratified designs in distance for windows.
+
+
 dsims 1.0.1
 -------------------
 

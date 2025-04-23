@@ -1,6 +1,6 @@
-47b04f66cb82e1d94f5e9d205ca268b0 *DESCRIPTION
+440abb53d95f1c527a0a3b1eedb36a13 *DESCRIPTION
 a77c89f3b5356664c5a4d2ea3d8a4c50 *NAMESPACE
-37e8573e8f3fdfce27ecd844e18c1ef0 *NEWS.md
+7180e9d8a7ff39e377effd8e0075596e *NEWS.md
 8b69ab3c0c9dc2402b9b1f1db7ea7aa6 *R/AICc.R
 40a589107e996e33ef8e353b9d23f594 *R/ClassConstructors.R
 6abbaea5a1e443f385fbdb703f4c4f8a *R/DS.Analysis.R
@@ -9,7 +9,7 @@ a77c89f3b5356664c5a4d2ea3d8a4c50 *NAMESPACE
 a19e610b7df95982140b071aa00ae531 *R/Detectability.R
 5359efaa074f6543c6dba0fdbf080469 *R/Population.Description.R
 bfd09a27316a7ac4b98da2e66142e3fb *R/Population.R
-ad4685a177f7f8598b1c8fccdb028583 *R/Simulation.R
+e604bf3567b780afc38d36f2cdcfa069 *R/Simulation.R
 b8e2aae366b90e19820cfa2105cfc86c *R/Simulation.Summary.R
 50c90bbf0071c662f29ad7f350b09457 *R/Survey.LT.R
 6224cfd52c074b6346e2741a250ea1b7 *R/Survey.PT.R
@@ -93,7 +93,7 @@ dca1c39ddf824ee2a3e8880ffecb1f48 *tests/test-that.R
 eee01349320c04ffd04520fa20ba8b02 *tests/testthat/test-check_BasicLine.R
 ea6bdad25d79ea657ea9e9460c7b38ea *tests/testthat/test-check_BasicPoint.R
 4ceef03fa43126190fc46d3707f82475 *tests/testthat/test-check_BasicSegmentedLine.R
-e9f6927f0d91c11a719f372c10043941 *tests/testthat/test-check_Constructors.R
+5df3f9352cc1029a9ec30940830f43e5 *tests/testthat/test-check_Constructors.R
 5044b14c762966e4db582c4c4dffe13d *tests/testthat/test-check_ExtremeCases.R
 5b569042ac1bbca31068b4a67a66218a *tests/testthat/test-check_IndividualCovariates.R
 3d427b537b144a782ece41f30e1b702d *tests/testthat/test-check_Other.R
